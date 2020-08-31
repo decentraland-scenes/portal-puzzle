@@ -13,7 +13,7 @@ The player needs to get to the access key which is tucked away inside a cove and
 * Portals can only appear on light walls - so if you fire at a dark wall, nothing will appear. Will test for collider names e.g. "lightWall_collider" vs "darkWall_collider" for this logic.
 * Portals shouldn't overlap each other so an easy solution is to make sure that the distance between the portals is far enough. However this doesn't take into account of corners. If the portals are on a different plane then they can get closer to each other.
 * Portals should not be below a certain height i.e. shouldn't be intersecting the ground so if it's going below the ground then it automatically should readjust to be flush with the ground 
-* Similar to the above, Portals in that are fire near a crevice / corner should appear with the edge of the portal flush with the corner
+* Similar to the above, Portals in that are fired near a crevice / corner should appear with the edge of the portal flush with the corner
 * If we going with the automatic platform then can use this: https://github.com/decentraland-scenes/moving-platforms/blob/master/src/movingPlatform.ts
 * If we go with an oblong shaped portal then it should be rotated to the angle the direction the user fire the portal when shooting at the ceiling or ground
 * If we're including the carrying of objects then rather than coding the logic to avoid intersection, we should out colliders to have thicker walls and then switch back when the player drops the object. Note: we can use physics for this but isn't necessary.
