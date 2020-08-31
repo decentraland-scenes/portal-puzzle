@@ -1,7 +1,7 @@
 # Portal Puzzle
 
 ## Objective
-The player needs to get to the access key which is tucked away inside a cove and to get there you need to make use of a moving platform. However the only way to get to reach the platform, is to teleport to an area just above the moving platform in order to land on top of it. This is a simplified version of one of the levels in the original Portal game.
+The player needs to get to the access key which is tucked away inside a cove and to get there you need to make use of a moving platform. However the only way to reach the platform, is to teleport to an area just above the moving platform in order to land on top of it. This is a simplified version of one of the levels in the original Portal game.
 
 ## Visual
 * This only needs to be a small 1x1 or 2x2 scene.
