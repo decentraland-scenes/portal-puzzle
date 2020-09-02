@@ -88,25 +88,27 @@ const input = Input.instance
 let activePortal = PortalColor.Blue
 
 input.subscribe("BUTTON_DOWN", ActionButton.POINTER, true, (event) => {
-  if (event.hit.meshName.match("lightWall_collider")) {
-    portalSuccessSound.getComponent(AudioSource).playOnce()
+  if (gun.hasGun) {
+    if (event.hit.meshName.match("lightWall_collider")) {
+      portalSuccessSound.getComponent(AudioSource).playOnce()
 
-    if (activePortal == PortalColor.Blue) {
-      // Create a new Transform component each time when using the lookAt
-      portalBlue.addComponentOrReplace(new Transform())
-      portalBlue.getComponent(Transform).lookAt(event.hit.normal)
-      portalBlue.getComponent(Transform).position = event.hit.hitPoint
-      portalBlue.cameraTarget = portalBlue.getComponent(Transform).position.add(event.hit.normal)
-      portalBlue.playAnimation()
+      if (activePortal == PortalColor.Blue) {
+        // Create a new Transform component each time when using the lookAt
+        portalBlue.addComponentOrReplace(new Transform())
+        portalBlue.getComponent(Transform).lookAt(event.hit.normal)
+        portalBlue.getComponent(Transform).position = event.hit.hitPoint
+        portalBlue.cameraTarget = portalBlue.getComponent(Transform).position.add(event.hit.normal)
+        portalBlue.playAnimation()
+      } else {
+        portalOrange.addComponentOrReplace(new Transform())
+        portalOrange.getComponent(Transform).lookAt(event.hit.normal)
+        portalOrange.getComponent(Transform).position = event.hit.hitPoint
+        portalOrange.cameraTarget = portalOrange.getComponent(Transform).position.add(event.hit.normal)
+        portalOrange.playAnimation()
+      }
     } else {
-      portalOrange.addComponentOrReplace(new Transform())
-      portalOrange.getComponent(Transform).lookAt(event.hit.normal)
-      portalOrange.getComponent(Transform).position = event.hit.hitPoint
-      portalOrange.cameraTarget = portalOrange.getComponent(Transform).position.add(event.hit.normal)
-      portalOrange.playAnimation()
+      portalFailSound.getComponent(AudioSource).playOnce()
     }
-  } else {
-    portalFailSound.getComponent(AudioSource).playOnce()
   }
 })
 
