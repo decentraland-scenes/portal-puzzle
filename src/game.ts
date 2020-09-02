@@ -70,12 +70,12 @@ portalOrange.addComponent(
       movePlayerTo(portalBlue.getComponent(Transform).position, portalBlue.cameraTarget)
       triggerBox.size.setAll(0)
       portalOrange.addComponent(
-        new utils.Delay(2000, () => {
+        new utils.Delay(2500, () => {
           triggerBox.size.setAll(2)
         })
       )
       portalBlue.addComponent(
-        new utils.Delay(2000, () => {
+        new utils.Delay(2500, () => {
           triggerBox.size.setAll(2)
         })
       )
