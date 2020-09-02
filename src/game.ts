@@ -13,21 +13,20 @@ walls.addComponent(new GLTFShape("models/walls.glb"))
 walls.addComponent(new Transform())
 engine.addEntity(walls)
 
-const gun = new Gun(new GLTFShape("models/portalGun.glb"), new Transform({ position: new Vector3(8, 2, 4.5) }))
-// gun.addComponent(
-//   new Transform({
-//     position: new Vector3(0.33, 0.33, 1),
-//   })
-// )
+// Gun
+const gun = new Gun(new GLTFShape("models/portalGun.glb"), new Transform({ position: new Vector3(8, 1.5, 4.5) }))
 
 const gunBlueGlow = new Entity()
 gunBlueGlow.addComponent(new GLTFShape("models/portalGunBlueGlow.glb"))
+gunBlueGlow.addComponent(new Transform())
 gunBlueGlow.setParent(gun)
 engine.addEntity(gun)
 
 const gunOrangeGlow = new Entity()
 gunOrangeGlow.addComponent(new GLTFShape("models/portalGunOrangeGlow.glb"))
-// gunOrangeGlow.setParent(gun)
+gunOrangeGlow.addComponent(new Transform())
+gunOrangeGlow.getComponent(Transform).scale.setAll(0)
+gunOrangeGlow.setParent(gun)
 
 // Card
 const card = new Card(new GLTFShape("models/card.glb"), new Transform({ position: new Vector3(8, 6.75, 13.5) }))
@@ -114,5 +113,13 @@ input.subscribe("BUTTON_DOWN", ActionButton.POINTER, true, (event) => {
 // NOTE: Will change this to the F key if we're adding an E key for picking up objects
 input.subscribe("BUTTON_DOWN", ActionButton.PRIMARY, false, (): void => {
   log("E Key Pressed")
-  activePortal == PortalColor.Blue ? (activePortal = PortalColor.Orange) : (activePortal = PortalColor.Blue)
+  if (activePortal == PortalColor.Blue) {
+    activePortal = PortalColor.Orange
+    gunBlueGlow.getComponent(Transform).scale.setAll(0)
+    gunOrangeGlow.getComponent(Transform).scale.setAll(1)
+  } else {
+    activePortal = PortalColor.Blue
+    gunBlueGlow.getComponent(Transform).scale.setAll(1)
+    gunOrangeGlow.getComponent(Transform).scale.setAll(0)
+  }
 })
