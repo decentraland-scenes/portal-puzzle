@@ -5,13 +5,18 @@ export enum PortalColor {
 }
 
 export class Portal extends Entity {
-
   public cameraTarget: Vector3 // Direction the player should be facing after teleporting
 
   constructor(model: GLTFShape) {
     super()
     engine.addEntity(this)
     this.addComponent(model)
-    this.addComponent(new Transform({ scale: new Vector3(0, 0, 0)}))
+    this.addComponent(new Animator())
+    this.getComponent(Animator).addClip(new AnimationState("Expand", { looping: false }))
+  }
+  
+  playAnimation() {
+    this.getComponent(Animator).getClip("Expand").stop() // Bug workaround
+    this.getComponent(Animator).getClip("Expand").play()
   }
 }
