@@ -67,7 +67,7 @@ portalOrange.addComponent(
 // Controls
 const input = Input.instance
 let activePortal = PortalColor.Blue
-const HEIGHT_ABOVE_GROUND = 1.2
+const HEIGHT_ABOVE_GROUND = 1.2 // In meters
 
 input.subscribe("BUTTON_DOWN", ActionButton.POINTER, true, (event) => {
   if (gun.hasGun) {
