@@ -43,10 +43,9 @@ portalBlue.addComponent(
   new utils.TriggerComponent(triggerBox, null, null, null, null, () => {
     if (portalOrange.hasComponent(Transform)) {
       teleportSound.getComponent(AudioSource).playOnce()
-
       movePlayerTo(portalOrange.getComponent(Transform).position, portalOrange.cameraTarget)
-      triggerBox.size.setAll(0)
-      portalOrange.addComponent(new utils.Delay(1500, () => { triggerBox.size.setAll(2) })) 
+      triggerBox.size.setAll(0) // Resize the trigger so that the player doesn't port in and out constantly
+      portalOrange.addComponent(new utils.Delay(1500, () => { triggerBox.size.setAll(2) })) // Reset the trigger after 1.5 seconds
       portalBlue.addComponent(new utils.Delay(1500, () => { triggerBox.size.setAll(2) }))
     }
   })
@@ -66,26 +65,28 @@ portalOrange.addComponent(
 // Controls
 const input = Input.instance
 let activePortal = PortalColor.Blue
+const HEIGHT_ABOVE_GROUND = 1.2
 
 input.subscribe("BUTTON_DOWN", ActionButton.POINTER, true, (event) => {
   if (gun.hasGun) {
-    if (event.hit.meshName.match("lightWall_collider")) {
+    if (event.hit.meshName.match("lightWall_collider")) { // Only allow portals to appear on light walls
       portalSuccessSound.getComponent(AudioSource).playOnce()
 
       if (activePortal == PortalColor.Blue) {
-        // Create a new Transform component each time when using the lookAt
-        portalBlue.addComponentOrReplace(new Transform())
-        portalBlue.getComponent(Transform).lookAt(event.hit.normal)
-        portalBlue.getComponent(Transform).position = event.hit.hitPoint
-        portalBlue.cameraTarget = portalBlue.getComponent(Transform).position.add(event.hit.normal)
-        if (portalBlue.getComponent(Transform).position.y <= 1.2) portalBlue.getComponent(Transform).position.y = 1.2
+        portalBlue.addComponentOrReplace(new Transform()) // Reset the Transform component
+        let transform = portalBlue.getComponent(Transform)
+        transform.lookAt(event.hit.normal)
+        transform.position = event.hit.hitPoint
+        portalBlue.cameraTarget = transform.position.add(event.hit.normal)
+        if (transform.position.y <= HEIGHT_ABOVE_GROUND) transform.position.y = HEIGHT_ABOVE_GROUND // Make sure the portal is above ground height
         portalBlue.playAnimation()
       } else {
         portalOrange.addComponentOrReplace(new Transform())
-        portalOrange.getComponent(Transform).lookAt(event.hit.normal)
-        portalOrange.getComponent(Transform).position = event.hit.hitPoint
-        portalOrange.cameraTarget = portalOrange.getComponent(Transform).position.add(event.hit.normal)
-        if (portalOrange.getComponent(Transform).position.y <= 1.2) portalOrange.getComponent(Transform).position.y = 1.2
+        let transform = portalOrange.getComponent(Transform)
+        transform.lookAt(event.hit.normal)
+        transform.position = event.hit.hitPoint
+        portalOrange.cameraTarget = transform.position.add(event.hit.normal)
+        if (transform.position.y <= HEIGHT_ABOVE_GROUND) transform.position.y = HEIGHT_ABOVE_GROUND
         portalOrange.playAnimation()
       }
     } else {
@@ -94,9 +95,8 @@ input.subscribe("BUTTON_DOWN", ActionButton.POINTER, true, (event) => {
   }
 })
 
-// NOTE: Will change this to the F key if we're adding an E key for picking up objects
+// Swap between portal colors when pressing the E key
 input.subscribe("BUTTON_DOWN", ActionButton.PRIMARY, false, (): void => {
-  log("E Key Pressed")
   if (activePortal == PortalColor.Blue) {
     activePortal = PortalColor.Orange
     gunBlueGlow.getComponent(Transform).scale.setAll(0)

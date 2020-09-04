@@ -5,7 +5,6 @@ import { TriggerBoxShape } from "../node_modules/decentraland-ecs-utils/triggers
 const gunPickupSound = new Sound(new AudioClip("sounds/gunPickup.mp3"))
 
 export class Gun extends Entity {
-
   hasGun: boolean = false
 
   constructor(model: GLTFShape, transform: Transform, blueGlow: Entity, orangeGlow: Entity) {
@@ -23,7 +22,8 @@ export class Gun extends Entity {
       new utils.TriggerComponent(
         new TriggerBoxShape(new Vector3(2, 2, 2), Vector3.Zero()),
         null, null, null, null, // Default trigger params
-        () => { // Camera enter
+        () => {
+          // Camera enter
           this.hasGun = true
           this.setParent(Attachable.PLAYER)
           this.getComponent(Transform).position = new Vector3(0.33, 0.33, 1)
