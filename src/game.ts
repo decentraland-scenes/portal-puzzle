@@ -36,8 +36,10 @@ const portalFailSound = new Sound(new AudioClip("sounds/portalFail.mp3"))
 // Portals
 const portalOrange = new Portal(new GLTFShape("models/portalOrange.glb"))
 const portalBlue = new Portal(new GLTFShape("models/portalBlue.glb"))
+const DELAY_TIME = 1500 // In milliseconds
+const RESET_SIZE = 2 // In meters
 
-let triggerBox = new utils.TriggerBoxShape(new Vector3(2, 2, 2), Vector3.Zero())
+let triggerBox = new utils.TriggerBoxShape(new Vector3(RESET_SIZE, RESET_SIZE, RESET_SIZE), Vector3.Zero())
 
 portalBlue.addComponent(
   new utils.TriggerComponent(triggerBox, null, null, null, null, () => {
@@ -45,8 +47,8 @@ portalBlue.addComponent(
       teleportSound.getComponent(AudioSource).playOnce()
       movePlayerTo(portalOrange.getComponent(Transform).position, portalOrange.cameraTarget)
       triggerBox.size.setAll(0) // Resize the trigger so that the player doesn't port in and out constantly
-      portalOrange.addComponent(new utils.Delay(1500, () => { triggerBox.size.setAll(2) })) // Reset the trigger after 1.5 seconds
-      portalBlue.addComponent(new utils.Delay(1500, () => { triggerBox.size.setAll(2) }))
+      portalOrange.addComponent(new utils.Delay(DELAY_TIME, () => { triggerBox.size.setAll(RESET_SIZE) })) // Reset the trigger after 1.5 seconds
+      portalBlue.addComponent(new utils.Delay(DELAY_TIME, () => { triggerBox.size.setAll(RESET_SIZE) }))
     }
   })
 )
@@ -56,8 +58,8 @@ portalOrange.addComponent(
       teleportSound.getComponent(AudioSource).playOnce()
       movePlayerTo(portalBlue.getComponent(Transform).position, portalBlue.cameraTarget)
       triggerBox.size.setAll(0)
-      portalOrange.addComponent(new utils.Delay(1500, () => { triggerBox.size.setAll(2) }))
-      portalBlue.addComponent(new utils.Delay(1500, () => { triggerBox.size.setAll(2) }))
+      portalOrange.addComponent(new utils.Delay(DELAY_TIME, () => { triggerBox.size.setAll(RESET_SIZE) }))
+      portalBlue.addComponent(new utils.Delay(DELAY_TIME, () => { triggerBox.size.setAll(RESET_SIZE) }))
     }
   })
 )
