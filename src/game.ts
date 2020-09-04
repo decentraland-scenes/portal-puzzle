@@ -4,29 +4,26 @@ import { Gun } from "./gun"
 import { Sound } from "./sound"
 import utils from "../node_modules/decentraland-ecs-utils/index"
 
+// Base
 const base = new Entity()
 base.addComponent(new GLTFShape("models/baseLight.glb"))
 engine.addEntity(base)
 
+// Walls
 const walls = new Entity()
 walls.addComponent(new GLTFShape("models/walls.glb"))
 walls.addComponent(new Transform())
 engine.addEntity(walls)
 
 // Gun
-const gun = new Gun(new GLTFShape("models/portalGun.glb"), new Transform({ position: new Vector3(8, 1.5, 4.5) }))
-
 const gunBlueGlow = new Entity()
-gunBlueGlow.addComponent(new GLTFShape("models/portalGunBlueGlow.glb"))
 gunBlueGlow.addComponent(new Transform())
-gunBlueGlow.setParent(gun)
-engine.addEntity(gun)
-
+gunBlueGlow.addComponent(new GLTFShape("models/portalGunBlueGlow.glb"))
 const gunOrangeGlow = new Entity()
-gunOrangeGlow.addComponent(new GLTFShape("models/portalGunOrangeGlow.glb"))
 gunOrangeGlow.addComponent(new Transform())
-gunOrangeGlow.getComponent(Transform).scale.setAll(0)
-gunOrangeGlow.setParent(gun)
+gunOrangeGlow.addComponent(new GLTFShape("models/portalGunOrangeGlow.glb"))
+gunOrangeGlow.getComponent(Transform).scale.setAll(0) // Hide orange glow
+const gun = new Gun(new GLTFShape("models/portalGun.glb"), new Transform({ position: new Vector3(8, 1.5, 4.5) }), gunBlueGlow, gunOrangeGlow)
 
 // Card
 const card = new Card(new GLTFShape("models/card.glb"), new Transform({ position: new Vector3(8, 6.75, 13.5) }))
@@ -49,16 +46,8 @@ portalBlue.addComponent(
 
       movePlayerTo(portalOrange.getComponent(Transform).position, portalOrange.cameraTarget)
       triggerBox.size.setAll(0)
-      portalOrange.addComponent(
-        new utils.Delay(1000, () => {
-          triggerBox.size.setAll(2)
-        })
-      )
-      portalBlue.addComponent(
-        new utils.Delay(1000, () => {
-          triggerBox.size.setAll(2)
-        })
-      )
+      portalOrange.addComponent(new utils.Delay(1500, () => { triggerBox.size.setAll(2) })) 
+      portalBlue.addComponent(new utils.Delay(1500, () => { triggerBox.size.setAll(2) }))
     }
   })
 )
@@ -66,19 +55,10 @@ portalOrange.addComponent(
   new utils.TriggerComponent(triggerBox, null, null, null, null, () => {
     if (portalBlue.hasComponent(Transform)) {
       teleportSound.getComponent(AudioSource).playOnce()
-
       movePlayerTo(portalBlue.getComponent(Transform).position, portalBlue.cameraTarget)
       triggerBox.size.setAll(0)
-      portalOrange.addComponent(
-        new utils.Delay(2500, () => {
-          triggerBox.size.setAll(2)
-        })
-      )
-      portalBlue.addComponent(
-        new utils.Delay(2500, () => {
-          triggerBox.size.setAll(2)
-        })
-      )
+      portalOrange.addComponent(new utils.Delay(1500, () => { triggerBox.size.setAll(2) }))
+      portalBlue.addComponent(new utils.Delay(1500, () => { triggerBox.size.setAll(2) }))
     }
   })
 )
@@ -98,12 +78,14 @@ input.subscribe("BUTTON_DOWN", ActionButton.POINTER, true, (event) => {
         portalBlue.getComponent(Transform).lookAt(event.hit.normal)
         portalBlue.getComponent(Transform).position = event.hit.hitPoint
         portalBlue.cameraTarget = portalBlue.getComponent(Transform).position.add(event.hit.normal)
+        if (portalBlue.getComponent(Transform).position.y <= 1.2) portalBlue.getComponent(Transform).position.y = 1.2
         portalBlue.playAnimation()
       } else {
         portalOrange.addComponentOrReplace(new Transform())
         portalOrange.getComponent(Transform).lookAt(event.hit.normal)
         portalOrange.getComponent(Transform).position = event.hit.hitPoint
         portalOrange.cameraTarget = portalOrange.getComponent(Transform).position.add(event.hit.normal)
+        if (portalOrange.getComponent(Transform).position.y <= 1.2) portalOrange.getComponent(Transform).position.y = 1.2
         portalOrange.playAnimation()
       }
     } else {

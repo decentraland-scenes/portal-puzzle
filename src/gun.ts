@@ -8,12 +8,15 @@ export class Gun extends Entity {
 
   hasGun: boolean = false
 
-  constructor(model: GLTFShape, transform: Transform) {
+  constructor(model: GLTFShape, transform: Transform, blueGlow: Entity, orangeGlow: Entity) {
     super()
     engine.addEntity(this)
     this.addComponent(model)
     this.addComponent(transform)
     this.addComponent(new utils.KeepRotatingComponent(Quaternion.Euler(0, 180, 0)))
+
+    blueGlow.setParent(this)
+    orangeGlow.setParent(this)
 
     // Create trigger for card
     this.addComponent(
