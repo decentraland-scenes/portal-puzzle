@@ -25,7 +25,7 @@ export class Gun extends Entity {
         () => {
           // Camera enter
           this.hasGun = true
-          this.setParent(Attachable.PLAYER)
+          this.setParent(Attachable.FIRST_PERSON_CAMERA)
           this.getComponent(Transform).position = new Vector3(0.33, 0.33, 1)
           this.getComponent(Transform).rotation.setEuler(0, 0, 0)
           this.getComponent(utils.KeepRotatingComponent).stop()
