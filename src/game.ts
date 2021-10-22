@@ -63,12 +63,12 @@ portalBlue.addComponent(
           portalOrange.cameraTarget
         )
         triggerBox.size.setAll(0) // Resize the trigger so that the player doesn't port in and out constantly
-        portalOrange.addComponent(
+        portalOrange.addComponentOrReplace(
           new utils.Delay(DELAY_TIME, () => {
             triggerBox.size.setAll(RESET_SIZE)
           })
         ) // Reset the trigger after 1.5 seconds
-        portalBlue.addComponent(
+        portalBlue.addComponentOrReplace(
           new utils.Delay(DELAY_TIME, () => {
             triggerBox.size.setAll(RESET_SIZE)
           })
@@ -87,12 +87,12 @@ portalOrange.addComponent(
           portalBlue.cameraTarget
         )
         triggerBox.size.setAll(0)
-        portalOrange.addComponent(
+        portalOrange.addComponentOrReplace(
           new utils.Delay(DELAY_TIME, () => {
             triggerBox.size.setAll(RESET_SIZE)
           })
         )
-        portalBlue.addComponent(
+        portalBlue.addComponentOrReplace(
           new utils.Delay(DELAY_TIME, () => {
             triggerBox.size.setAll(RESET_SIZE)
           })
