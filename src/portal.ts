@@ -1,7 +1,7 @@
 // Config
 export enum PortalColor {
   Blue = 0,
-  Orange = 1,
+  Orange = 1
 }
 
 export class Portal extends Entity {
@@ -12,11 +12,13 @@ export class Portal extends Entity {
     engine.addEntity(this)
     this.addComponent(model)
     this.addComponent(new Animator())
-    this.getComponent(Animator).addClip(new AnimationState("Expand", { looping: false }))
+    this.getComponent(Animator).addClip(
+      new AnimationState('Expand', { looping: false })
+    )
   }
-  
+
   playAnimation() {
-    this.getComponent(Animator).getClip("Expand").stop() // Bug workaround
-    this.getComponent(Animator).getClip("Expand").play()
+    this.getComponent(Animator).getClip('Expand').stop() // Bug workaround
+    this.getComponent(Animator).getClip('Expand').play()
   }
 }

@@ -40,7 +40,7 @@ export class Gun extends Entity {
             this.getComponent(Transform).rotation.setEuler(0, 0, 0)
             this.getComponent(utils.KeepRotatingComponent).stop()
             gunPickupSound.getComponent(AudioSource).playOnce()
-          },
+          }
         }
       )
     )

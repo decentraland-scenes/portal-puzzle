@@ -48,7 +48,7 @@ const portalBlue = new Portal(new GLTFShape('models/portalBlue.glb'))
 const DELAY_TIME = 1500 // In milliseconds
 const RESET_SIZE = 2 // In meters
 
-let triggerBox = new utils.TriggerBoxShape(
+const triggerBox = new utils.TriggerBoxShape(
   new Vector3(RESET_SIZE, RESET_SIZE, RESET_SIZE),
   Vector3.Zero()
 )
@@ -61,7 +61,7 @@ portalBlue.addComponent(
         movePlayerTo(
           portalOrange.getComponent(Transform).position,
           portalOrange.cameraTarget
-        )
+        ).catch((error) => log(error))
         triggerBox.size.setAll(0) // Resize the trigger so that the player doesn't port in and out constantly
         portalOrange.addComponentOrReplace(
           new utils.Delay(DELAY_TIME, () => {
@@ -74,7 +74,7 @@ portalBlue.addComponent(
           })
         )
       }
-    },
+    }
   })
 )
 portalOrange.addComponent(
@@ -85,7 +85,7 @@ portalOrange.addComponent(
         movePlayerTo(
           portalBlue.getComponent(Transform).position,
           portalBlue.cameraTarget
-        )
+        ).catch((error) => log(error))
         triggerBox.size.setAll(0)
         portalOrange.addComponentOrReplace(
           new utils.Delay(DELAY_TIME, () => {
@@ -98,7 +98,7 @@ portalOrange.addComponent(
           })
         )
       }
-    },
+    }
   })
 )
 
@@ -113,9 +113,9 @@ input.subscribe('BUTTON_DOWN', ActionButton.POINTER, true, (event) => {
       // Only allow portals to appear on light walls
       portalSuccessSound.getComponent(AudioSource).playOnce()
 
-      if (activePortal == PortalColor.Blue) {
+      if (activePortal === PortalColor.Blue) {
         portalBlue.addComponentOrReplace(new Transform()) // Reset the Transform component
-        let transform = portalBlue.getComponent(Transform)
+        const transform = portalBlue.getComponent(Transform)
         transform.lookAt(event.hit.normal)
         transform.position = event.hit.hitPoint
         portalBlue.cameraTarget = transform.position.add(event.hit.normal)
@@ -124,7 +124,7 @@ input.subscribe('BUTTON_DOWN', ActionButton.POINTER, true, (event) => {
         portalBlue.playAnimation()
       } else {
         portalOrange.addComponentOrReplace(new Transform())
-        let transform = portalOrange.getComponent(Transform)
+        const transform = portalOrange.getComponent(Transform)
         transform.lookAt(event.hit.normal)
         transform.position = event.hit.hitPoint
         portalOrange.cameraTarget = transform.position.add(event.hit.normal)
@@ -140,7 +140,7 @@ input.subscribe('BUTTON_DOWN', ActionButton.POINTER, true, (event) => {
 
 // Swap between portal colors when pressing the E key
 input.subscribe('BUTTON_DOWN', ActionButton.PRIMARY, false, (): void => {
-  if (activePortal == PortalColor.Blue) {
+  if (activePortal === PortalColor.Blue) {
     activePortal = PortalColor.Orange
     gunBlueGlow.getComponent(Transform).scale.setAll(0)
     gunOrangeGlow.getComponent(Transform).scale.setAll(1)
